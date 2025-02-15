@@ -1,0 +1,27 @@
+{
+  "name": "gps-ubx",
+  "keywords": "serial, sensor, gps, driver",
+  "description": "Portable, multi-instance driver for uBlox GPS receivers",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/johnmgreenwell/ublox"
+  },
+  "authors": 
+  [
+    {
+      "name": "johnmgreenwell",
+      "maintainer": true
+    }
+  ],
+  "version": "1.0.0",
+  "license": "MIT",
+  "frameworks": "*",
+  "platforms": "*",
+  "build": {
+    "libArchive": false,
+    "flags": [
+    "-I../../include"
+    ]
+  }
+}
