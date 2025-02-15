@@ -8,6 +8,17 @@ This library communicates with uBlox GNSS receivers using the UBX protocol.  Thi
    * [Changelog](CHANGELOG.md)
    * [Contributing guide](CONTRIBUTING.md)
 
+## Usage
+
+* For this modified version, the following hardware abstraction layer (HAL) requirements must be satisfied:
+
+* A header file `hal.h` providing access to HAL namespace classes and methods.
+* A UART class within the HAL namespace with the following methods:
+    - Return true if UART data is available in the receive buffer: bool available()
+    - Read and return a single byte from the UART buffer: uint8_t read()
+    - Flush the receive buffer of the UART device: void flush()
+* A delay_ms() function in the HAL namespace that delays an accurate milliseconds to be used for timing.
+
 # Description
 uBlox produces standard and high precision GPS receivers. These receivers feature high sensitivity, minimal acquisition times, and small form factors. UBX is a uBlox binary format for efficiently retrieving data from the receiver.
 
