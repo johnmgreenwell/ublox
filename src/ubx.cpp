@@ -3,6 +3,7 @@
 * brian.taylor@bolderflight.com
 * 
 * Copyright (c) 2022 Bolder Flight Systems Inc
+* Modified to support custom HAL, John Greenwell, 2025
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the “Software”), to
@@ -23,36 +24,31 @@
 * IN THE SOFTWARE.
 */
 
-#if defined(ARDUINO)
-#include <Arduino.h>
-#else
 #include <cstddef>
 #include <cstdint>
-#include "core/core.h"
-#endif
 #include "ubx.h"
 #include "ubx_defs.h"  // NOLINT
 #include "ubx_nav.h"  // NOLINT
 
-namespace bfs {
+namespace PeripheralIO {
+namespace ubx {
 
 constexpr uint8_t Ubx::UBX_HEADER_[];
-void Ubx::Config(HardwareSerial* bus) {
+void Ubx::Config(HAL::UART& bus) {
   bus_ = bus;
 }
 bool Ubx::Begin(int32_t baud) {
-  bus_->begin(baud);
-  bus_->flush();
+  bus_.flush();
   while (comm_timeout_count_++ < COMM_TIMEOUT_TRIES_) {
     if (ParseMsg()) {
       return true;
     }
-    delay(COMM_TIMEOUT_DELAY_MS_);
+    HAL::delay_ms(COMM_TIMEOUT_DELAY_MS_);
   }
   return false;
 }
 bool Ubx::Read() {
-  while (bus_->available()) {
+  while (bus_.available()) {
     if (ParseMsg()) {
       if (rx_msg_.cls == UBX_NAV_CLS_) {
         switch (rx_msg_.id) {
@@ -357,8 +353,8 @@ void Ubx::ProcessNavData() {
   }
 }
 bool Ubx::ParseMsg() {
-  while (bus_->available()) {
-    c_ = bus_->read();
+  while (bus_.available()) {
+    c_ = bus_.read();
     /* Packet header */
     if (parser_state_ < sizeof(UBX_HEADER_)) {
       if (c_ == UBX_HEADER_[parser_state_]) {
@@ -409,3 +405,4 @@ bool Ubx::ParseMsg() {
 }
 
 }  // namespace bfs
+}  // namespace PeripheralIO

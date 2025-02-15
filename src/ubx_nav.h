@@ -3,6 +3,7 @@
 * brian.taylor@bolderflight.com
 * 
 * Copyright (c) 2022 Bolder Flight Systems Inc
+* Modified to support custom HAL, John Greenwell, 2025
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the “Software”), to
@@ -26,13 +27,12 @@
 #ifndef SRC_UBX_NAV_H_
 #define SRC_UBX_NAV_H_
 
-#if !defined(ARDUINO)
 #include <cstdint>
 #include <cstddef>
-#endif
 #include "ubx_defs.h"  // NOLINT
 
-namespace bfs {
+namespace PeripheralIO {
+namespace ubx {
 /*
 * Defs for UBX-NAV messages
 */
@@ -557,5 +557,6 @@ struct UbxNavVelned {
 };
 
 }  // namespace bfs
+}  // namespace PeripheralIO
 
 #endif  // SRC_UBX_NAV_H_

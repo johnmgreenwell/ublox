@@ -3,6 +3,7 @@
 * brian.taylor@bolderflight.com
 * 
 * Copyright (c) 2022 Bolder Flight Systems Inc
+* Modified to support custom HAL, John Greenwell, 2025
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the “Software”), to
@@ -31,7 +32,8 @@
 #include <cstddef>
 #endif
 
-namespace bfs {
+namespace PeripheralIO {
+namespace ubx {
 /*
 * Aliases for uBlox defined types to make defining packets from the interface
 * descriptions easier.
@@ -73,5 +75,6 @@ static constexpr uint8_t UBX_COM_PROT_RTCM_ = 0x04;
 static constexpr uint8_t UBX_COM_PROT_RTCM3_ = 0x08;
 
 }  // namespace bfs
+}  // namespace PeripheralIO
 
 #endif  // SRC_UBX_DEFS_H_

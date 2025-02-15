@@ -3,6 +3,7 @@
 * brian.taylor@bolderflight.com
 * 
 * Copyright (c) 2022 Bolder Flight Systems Inc
+* Modified to support custom HAL, John Greenwell, 2025
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the “Software”), to
@@ -26,17 +27,14 @@
 #ifndef UBX_SRC_UBX_H_  // NOLINT
 #define UBX_SRC_UBX_H_
 
-#if defined(ARDUINO)
-#include <Arduino.h>
-#else
 #include <cstddef>
 #include <cstdint>
-#include "core/core.h"
-#endif
+#include "hal.h"
 #include "ubx_defs.h"  // NOLINT
 #include "ubx_nav.h"  // NOLINT
 
-namespace bfs {
+namespace PeripheralIO {
+namespace ubx {
 
 class Ubx {
  public:
@@ -48,9 +46,8 @@ class Ubx {
     FIX_RTK_FLOAT = 5,
     FIX_RTK_FIXED = 6
   };
-  Ubx() {}
-  explicit Ubx(HardwareSerial* bus) : bus_(bus) {}
-  void Config(HardwareSerial* bus);
+  explicit Ubx(HAL::UART& bus) : bus_(bus) {}
+  void Config(HAL::UART& bus);
   /* Standard begin, set the baud and test for comms */
   bool Begin(const int32_t baud);
   /* Reads NAV data and returns true on EOE */
@@ -141,7 +138,7 @@ class Ubx {
   /* Process nav data */
   void ProcessNavData();
   /* Communication */
-  HardwareSerial* bus_;
+  HAL::UART& bus_;
   int16_t comm_timeout_count_ = 0; 
   static const int16_t COMM_TIMEOUT_TRIES_ = 1000;
   static const int16_t COMM_TIMEOUT_DELAY_MS_ = 10; 
@@ -259,5 +256,6 @@ class Ubx {
 };
 
 }  // namespace bfs
+}  // namespace PeripheralIO
 
 #endif  // UBX_SRC_UBX_H_ NOLINT
